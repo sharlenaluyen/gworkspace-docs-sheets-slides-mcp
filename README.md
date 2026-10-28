@@ -126,7 +126,7 @@ then fully quit and reopen Claude Desktop:
     "gworkspace-docs-sheets-slides": {
       "command": "node",
       "args": ["/absolute/path/to/gworkspace-docs-sheets-slides-mcp/src/server.js"],
-      "env": { "GWORKSPACE_MCP_FILES_DIR": "/Users/you/Downloads/gworkspace-mcp" }
+      "env": { "GWORKSPACE_MCP_FILES_DIR": "/Users/you/Downloads/google-mcp-files" }
     }
   }
 }
@@ -135,6 +135,12 @@ then fully quit and reopen Claude Desktop:
 The `env` line is optional. Exports go to `~/Downloads/gworkspace-mcp` by
 default, and `export_presentation` can't write anywhere else (paths are
 checked after resolving `../` and symlinks).
+
+To attach an exported deck to an email, set this to the same path as
+multi-gmail-mcp's `MULTI_GMAIL_MCP_FILES_DIR` (and multi-gdrive-mcp's
+`MULTI_GDRIVE_MCP_FILES_DIR`). Then Gmail's `attach_document` can read
+what `export_presentation` writes. Only the config changes, no code. See
+"One files folder for all the servers" in google-mcp-accounts' README.
 
 ## Input limits
 
