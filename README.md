@@ -13,8 +13,8 @@ login, the same one the Gmail, Calendar, and Drive servers use.
 
 | Scope | Used for |
 | --- | --- |
-| `documents` | Docs tools: read and edit any doc the account can open |
-| `spreadsheets` | Sheets tools: read and edit any sheet the account can open |
+| `documents` | Docs tools: read, create, and edit any doc the account can open |
+| `spreadsheets` | Sheets tools: read, create, and edit any sheet the account can open |
 | `presentations` | Slides tools: read, create, and edit any deck the account can open |
 | `drive.file` | `export_presentation` only. Exports go through Drive's export endpoint |
 
@@ -36,9 +36,11 @@ requested by default.
 | --- | --- | --- | --- |
 | | `list_accounts` | read | Which products each account can use |
 | Docs | `read_doc` | read | Title and plain text, including tables. `max_chars` caps output |
+| Docs | `create_doc` | **immediately** | New, private doc |
 | Docs | `append_text` | **immediately** | Adds text at the end of the body |
 | Docs | `replace_text` | **dry run** until `confirm_replace: true` | Preview shows the match count, context around each match, and a `revision_id` |
 | Sheets | `get_values` | read | `render`: formatted, unformatted, or formulas |
+| Sheets | `create_spreadsheet` | **immediately** | New, private spreadsheet |
 | Sheets | `update_values` | **dry run** until `confirm_update: true` | Preview is a cell-by-cell before/after diff of exactly the cells that would be written |
 | Sheets | `append_values` | **immediately** | Inserts rows below existing data |
 | Slides | `read_presentation` | read | Each slide's shapes and tables with `object_id`, plus speaker notes |
@@ -65,12 +67,13 @@ audit-logged and never auto-retried.
   top-left cell and the size of `values`, so the preview and the write
   can't disagree). It lists every changed cell, and counts how many
   non-empty cells get overwritten.
-- **`append_text`, `append_values`, `add_slide`, and `create_presentation`
-  run immediately.** They don't touch existing content, they're easy to undo
-  (version history, or delete the row/slide/deck), and none of them sends
-  anyone a notification. A new deck is private until shared. They still
-  write to the audit log, and none is retried, since a retry after a
-  timeout could add the text, rows, or slide twice.
+- **`append_text`, `append_values`, `add_slide`, `create_doc`,
+  `create_spreadsheet`, and `create_presentation` run immediately.** They
+  don't touch existing content, they're easy to undo (version history, or
+  delete the row/slide/file), and none of them sends anyone a notification.
+  A new doc, spreadsheet, or deck is private until shared. They still write
+  to the audit log, and none is retried, since a retry after a timeout
+  could add the text, rows, or slide twice, or create a second file.
 
 ### Formula safety in Sheets
 
