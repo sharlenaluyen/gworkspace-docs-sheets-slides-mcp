@@ -11,12 +11,15 @@ import {
   REQUIRED_SCOPES,
   createAuditLogger,
 } from "google-mcp-accounts";
-import { createToolDefiner, jsonResult } from "./mcp.js";
+import { accountInstructions, createToolDefiner, jsonResult } from "./mcp.js";
 import { DOCS_ANNOTATIONS, registerDocsTools } from "./docs.js";
 import { SHEETS_ANNOTATIONS, registerSheetsTools } from "./sheets.js";
 import { SLIDES_ANNOTATIONS, registerSlidesTools } from "./slides.js";
 
-const server = new McpServer({ name: "gworkspace-docs-sheets-slides-mcp", version: "1.0.0" });
+const server = new McpServer(
+  { name: "gworkspace-docs-sheets-slides-mcp", version: "1.0.0" },
+  { instructions: accountInstructions() }
+);
 
 // Shared ~/.google-mcp/audit.log, every line tagged with this server's name.
 const logAuditEvent = createAuditLogger("gworkspace-docs-sheets-slides-mcp");
